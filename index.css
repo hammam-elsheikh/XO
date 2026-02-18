@@ -32,7 +32,6 @@ header p {
 }
 
 .box {
-  /* border: 1px black solid; */
   width: 100%;
   height: 100%;
   display: flex;
@@ -40,7 +39,9 @@ header p {
   justify-content: center;
   font-size: 48px;
   font-family: "Kalam", cursive;
-  /* background-color: aqua; */
+}
+.box:hover {
+  cursor: pointer;
 }
 
 .box-4,
