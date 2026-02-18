@@ -1,26 +1,34 @@
 "use strict";
 
-let turn = document.querySelector("header p .turn");
+let turn = document.querySelector("#turn-or-result .turn");
+let result = document.getElementById("turn-or-result");
 let random = Math.round(Math.random());
 const boxs = document.querySelectorAll(".grid .box");
 const header = document.querySelector("header");
 const resetBtn = document.getElementById("reset-btn");
 
 let winner = null;
+let winningMessage = "";
 
 resetBtn.onclick = () => {
   boxs.forEach((box) => (box.textContent = ""));
   winner = null;
+  winningMessage = "";
   count = 0;
   random = Math.round(Math.random());
   turn.textContent = random ? "X" : "O";
+  winningMessage = "";
+  result.innerHTML = `
+  Turn: <span class="turn"></span>`;
+  turn = document.querySelector("#turn-or-result .turn");
+  turn.textContent = random ? "O" : "X";
 };
 
-// console.log(random);
 turn.textContent = random ? "X" : "O";
 
 boxs.forEach((box, index) =>
   box.addEventListener("click", function () {
+    if (winningMessage) return;
     draw.call(box, index);
   }),
 );
@@ -29,6 +37,7 @@ let count = 0;
 
 function draw(index) {
   let currentTurn = turn.textContent;
+
   if (!this.textContent) {
     if (currentTurn == "X") {
       this.textContent = "X";
@@ -46,7 +55,6 @@ function draw(index) {
 
 function whoIsTheWinner(index) {
   // the row of this
-  //   console.log("current box index", index);
 
   const rows = [];
   rows[0] = [0, 1, 2];
@@ -64,7 +72,10 @@ function whoIsTheWinner(index) {
     boxs[currRowIndexes[1]].textContent === boxs[currRowIndexes[2]].textContent
   ) {
     winner = boxs[currRowIndexes[0]].textContent;
-    alert(`${winner} wins !!!`);
+    winningMessage = `${winner} wins !!!`;
+    // const result = document.getElementById("turn-or-result");
+    result.textContent = winningMessage;
+
     return;
   }
   // the columnn of this
@@ -84,7 +95,9 @@ function whoIsTheWinner(index) {
     boxs[currColIndexes[1]].textContent === boxs[currColIndexes[2]].textContent
   ) {
     winner = boxs[currColIndexes[0]].textContent;
-    alert(`${winner} wins !!!`);
+    winningMessage = `${winner} wins !!!`;
+    // const result = document.getElementById("turn-or-result");
+    result.textContent = winningMessage;
     return;
   }
 
@@ -97,7 +110,8 @@ function whoIsTheWinner(index) {
     boxs[4].textContent === boxs[8].textContent
   ) {
     winner = boxs[0].textContent;
-    alert(`${winner} wins !!!`);
+    winningMessage = `${winner} wins !!!`;
+    result.textContent = winningMessage;
     return;
   } else if (
     (boxs[2].textContent === "X" || boxs[2].textContent === "O") &&
@@ -105,13 +119,15 @@ function whoIsTheWinner(index) {
     boxs[4].textContent === boxs[6].textContent
   ) {
     winner = boxs[2].textContent;
-    alert(`${winner} wins !!!`);
+    winningMessage = `${winner} wins !!!`;
+    result.textContent = winningMessage;
     return;
   }
 
   // is draw
   if (count === 9 && winner === null) {
-    alert("Draw !!!");
+    winningMessage = `Draw !!!`;
+    result.textContent = winningMessage;
     return;
   }
 }
