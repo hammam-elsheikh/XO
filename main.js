@@ -3,7 +3,7 @@
 let turn = document.querySelector("#turn-or-result .turn");
 let result = document.getElementById("turn-or-result");
 let random = Math.round(Math.random());
-const boxs = document.querySelectorAll(".grid .box");
+const boxes = document.querySelectorAll(".grid .box");
 const header = document.querySelector("header");
 const resetBtn = document.getElementById("reset-btn");
 
@@ -11,22 +11,24 @@ let winner = null;
 let winningMessage = "";
 
 resetBtn.onclick = () => {
-  boxs.forEach((box) => (box.textContent = ""));
+  boxes.forEach((box) => (box.textContent = ""));
   winner = null;
-  winningMessage = "";
   count = 0;
   random = Math.round(Math.random());
-  turn.textContent = random ? "X" : "O";
   winningMessage = "";
-  result.innerHTML = `
-  Turn: <span class="turn"></span>`;
+  result.innerHTML = `Turn: <span class="turn"></span>`;
   turn = document.querySelector("#turn-or-result .turn");
-  turn.textContent = random ? "O" : "X";
+  turn.textContent = random ? "X" : "O";
 };
+
+function displayWinner() {
+  winningMessage = `${winner} wins !!!`;
+  result.textContent = winningMessage;
+}
 
 turn.textContent = random ? "X" : "O";
 
-boxs.forEach((box, index) =>
+boxes.forEach((box, index) =>
   box.addEventListener("click", function () {
     if (winningMessage) return;
     draw.call(box, index);
@@ -47,7 +49,7 @@ function draw(index) {
       turn.textContent = "X";
     }
     count++;
-    if (count >= 3) {
+    if (count >= 5) {
       whoIsTheWinner(index);
     }
   }
@@ -67,14 +69,13 @@ function whoIsTheWinner(index) {
   const currRowIndexes = rows[currRow];
   //   console.log("currRowIndexes", currRowIndexes);
   if (
-    boxs[currRowIndexes[0]].textContent ===
-      boxs[currRowIndexes[1]].textContent &&
-    boxs[currRowIndexes[1]].textContent === boxs[currRowIndexes[2]].textContent
+    boxes[currRowIndexes[0]].textContent ===
+      boxes[currRowIndexes[1]].textContent &&
+    boxes[currRowIndexes[1]].textContent ===
+      boxes[currRowIndexes[2]].textContent
   ) {
-    winner = boxs[currRowIndexes[0]].textContent;
-    winningMessage = `${winner} wins !!!`;
-    // const result = document.getElementById("turn-or-result");
-    result.textContent = winningMessage;
+    winner = boxes[currRowIndexes[0]].textContent;
+    displayWinner();
 
     return;
   }
@@ -90,14 +91,13 @@ function whoIsTheWinner(index) {
   const currColIndexes = columns[currCol];
   //   console.log("currCol", currCol);
   if (
-    boxs[currColIndexes[0]].textContent ===
-      boxs[currColIndexes[1]].textContent &&
-    boxs[currColIndexes[1]].textContent === boxs[currColIndexes[2]].textContent
+    boxes[currColIndexes[0]].textContent ===
+      boxes[currColIndexes[1]].textContent &&
+    boxes[currColIndexes[1]].textContent ===
+      boxes[currColIndexes[2]].textContent
   ) {
-    winner = boxs[currColIndexes[0]].textContent;
-    winningMessage = `${winner} wins !!!`;
-    // const result = document.getElementById("turn-or-result");
-    result.textContent = winningMessage;
+    winner = boxes[currColIndexes[0]].textContent;
+    displayWinner();
     return;
   }
 
@@ -105,22 +105,20 @@ function whoIsTheWinner(index) {
   // the diagonals
 
   if (
-    (boxs[0].textContent === "X" || boxs[0].textContent === "O") &&
-    boxs[0].textContent === boxs[4].textContent &&
-    boxs[4].textContent === boxs[8].textContent
+    (boxes[0].textContent === "X" || boxes[0].textContent === "O") &&
+    boxes[0].textContent === boxes[4].textContent &&
+    boxes[4].textContent === boxes[8].textContent
   ) {
-    winner = boxs[0].textContent;
-    winningMessage = `${winner} wins !!!`;
-    result.textContent = winningMessage;
+    winner = boxes[0].textContent;
+    displayWinner();
     return;
   } else if (
-    (boxs[2].textContent === "X" || boxs[2].textContent === "O") &&
-    boxs[2].textContent === boxs[4].textContent &&
-    boxs[4].textContent === boxs[6].textContent
+    (boxes[2].textContent === "X" || boxes[2].textContent === "O") &&
+    boxes[2].textContent === boxes[4].textContent &&
+    boxes[4].textContent === boxes[6].textContent
   ) {
-    winner = boxs[2].textContent;
-    winningMessage = `${winner} wins !!!`;
-    result.textContent = winningMessage;
+    winner = boxes[2].textContent;
+    displayWinner();
     return;
   }
 
